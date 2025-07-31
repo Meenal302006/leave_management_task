@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Manage Leave Requests{% endblock %}
+{% block content %}
+<h2>Manage Leave Requests</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.user_id }}</td>
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>{{ leave.status }}</td>
+            <td>
+                {% if leave.status == 'Pending' %}
+                <form method="POST">
+                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                    <button type="submit" name="action" value="Approved" class="btn btn-success btn-sm">Approve</button>
+                    <button type="submit" name="action" value="Rejected" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+                {% else %}
+                <span class="text-muted">{{ leave.status }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
